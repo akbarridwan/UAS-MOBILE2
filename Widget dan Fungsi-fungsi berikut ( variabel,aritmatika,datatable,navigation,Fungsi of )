@@ -1,265 +1,225 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(App04());
+void main() => runApp(MyApp());
 
-class App04 extends StatelessWidget {
+class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: {
-        "Data": (context) => Akbar RidwanDataTable(),
-        "Lupa": (context) => LupaPass(),
-        "aritmatika": (context) => Aritmatika(),
-      },
-      title: 'FORM LOGIN',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('UAS-Akbar Ridwan(6SIA6)'),
-        ),
-        body: LoginPage(),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
     );
   }
 }
 
 class LoginPage extends StatefulWidget {
-  _LoginPageState createState() => new _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  
-  final myNirm = TextEditingController();
-  
-  String nirm;
-  onLogin() {
-    nirm = myNirm.text;
-    if (nirm == '2018020610' ) {
-      Navigator.pushNamed(context, "Data");
-    } else {
-      Navigator.pushNamed(context, "Lupa");
-    }
-  }
+class LoginPageState extends State<LoginPage> {
+  final txtuser = TextEditingController();
+  String nUsername, nPassword;
 
   Widget build(BuildContext context) {
-
-    final id = TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      autofocus: false,
-      controller: myNirm,
-      decoration: InputDecoration(
-        icon: Icon(
-        Icons.person,
-        color: Colors.blue
-        ),
-        hintText: 'Nirm',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ),
-    );
-
-
-    final loginButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          onPressed:onLogin,
-            // () {Navigator.pushNamed(context, "myApp");},
-          color: Colors.lightBlueAccent,
-          child: Text('Masuk', style: TextStyle(color: Colors.white)),
-        ),
-      ),
-    );
-
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
+      appBar: AppBar(
+        title: Text('UAS - AKBAR RIDWAN'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.only(left: 42, right: 42, top: 32, bottom: 32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-   
-            SizedBox(height: 48.0),
-            id,
-            SizedBox(height: 8.0),
-            loginButton,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 32),
+            ),
+            TextField(
+              controller: txtuser,
+              decoration: InputDecoration(
+                   prefixIcon: Icon(Icons.vpn_key),
+                  hintText: 'Input Nirm Mahasiswa',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(32)))),
+            ),
+            
+            Padding(
+              padding: const EdgeInsets.only(top: 0),
+              child: Container(
+                width: 200,
+                height: 40,
+                margin: EdgeInsets.only(top: 32),
+                decoration: BoxDecoration(
+                    color: Color(0XFF2a3ed7),
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                child: Center(
+                  child: TextButton(
+                    onPressed: () {
+                      nUsername = txtuser.text;
+
+                      if (nUsername == "2018020610")
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Utama()));
+                    },
+                    child: Text('Login', style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 }
- class LupaPass extends StatelessWidget {
+
+class Utama extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/Info Mahasiswa' :(BuildContext context) => new Data(),
+        '/Total Bayar' :(BuildContext context) => new ProgramMatematika(),
+      },
+      
+      
+      home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Lupa Nirm'),
+          title: Text('Informasi Mahasiswa '),
+          backgroundColor: Colors.blue,
         ),
         //body
-        body: Text("Nirm Yang Anda Masukkan Salah"));
+        body: GridView.count(
+          crossAxisCount: 2,
+          children: <Widget>[
+            MyMenu(judul: "Info Mahasiswa", icon: Icons.assignment_ind),
+            MyMenu(judul: "Total Bayar", icon: Icons.point_of_sale),
+          ],
+        ),
+      ),
+    );
   }
 }
-class AkbarRidwanDataTable extends StatefulWidget {
-  _Akbar RidwanDataTableState createState() => _AkbarRidwanDataTableState();
+
+class MyMenu extends StatelessWidget {
+  //Atribut
+  final String judul;
+  final IconData icon;
+  final MaterialColor warna;
+  //constructor
+  MyMenu({this.judul, this.icon, this.warna});
+
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () {Navigator.pushNamed(context, '/$judul');},
+        splashColor: Colors.blue,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(icon, size:70.0),
+              Text(judul, style: new TextStyle(fontSize: 17.0))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _AkbarRidwanDataTableState extends State<AkbarRidwan DataTable> {
-  List<DataMahasiswa> barang;
+class Data extends StatelessWidget {
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Data Mahasiswa"),
+      ),
+      body: new Column(
+        children: <Widget>[
+          new ListTile(
+            subtitle: const Text('Nama Mahasiswa'),
+            title: const Text('AKBAR RIDWAN'),
+          ),
+          new ListTile(
+            subtitle: const Text('Jenis Kelamin'),
+            title: const Text('LAKI LAKI'),
+          ),
+           new ListTile(
+            subtitle: const Text('Alamat'),
+            title: const Text('Jln. Cendrawasih 12A'),
+             ),
+           new ListTile(
+            subtitle: const Text('Jurusan'),
+            title: const Text('Sistem Informasi'),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-  void initState() {
-    super.initState();
-    barang = DataMahasiswa.getDataBarang();
+class ProgramMatematika extends StatefulWidget {
+  createState() => _ProgramMatematikaInputDataState();
+}
+
+class _ProgramMatematikaInputDataState extends State<ProgramMatematika> {
+  
+  final _namabarang = TextEditingController();
+  final _jumlah = TextEditingController();
+  final _harga = TextEditingController();
+  String _totalbayar='';
+ 
+
+  onHitung() {
+    setState(() {
+      var hitung= int.parse(_harga.text)* int.parse( _jumlah .text);
+      _totalbayar =
+         "Total Pembayaran = $hitung";
+    });
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Akbar Ridwan - 6SIA6'),
+        backgroundColor: Colors.blue,
+        title: Text("Program Matematika"),
       ),
-      body: ListView(children: <Widget>[
-        Center(
-            child: Text('Data Mahasiswa',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-        DataTable(
-          columns: [
-            DataColumn(label: Text('')),
-            DataColumn(label: Text('')),
+      body: Container(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            TextField(
+         decoration: InputDecoration(labelText: "Input Nama Barang"),
+            ),
+             TextField(
+              controller: _jumlah,
+              decoration: InputDecoration(labelText: "Input Jumlah"),
+            ),
+            TextField(
+              controller: _harga,
+              decoration: InputDecoration(labelText: "Input Harga"),
+            ),
+            RaisedButton(
+              child: Text("Hitung"),
+              onPressed: onHitung,
+            ),
+            Text("$_totalbayar"),
           ],
-          rows: barang
-              .map(
-                (barang) => DataRow(cells: [
-                  DataCell(Text(barang.id)),
-                  DataCell(Text(barang.namabarang)),
-                ]),
-              )
-              .toList(),
-        ),
-        Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          onPressed:
-            () {Navigator.pushNamed(context, "aritmatika");},
-          color: Colors.lightBlueAccent,
-          child: Text('Program Aritmatika', style: TextStyle(color: Colors.white)),
         ),
       ),
-    ),
-      ]),
     );
   }
 }
-
-class DataMahasiswa {
-  //Attribut
-  String id;
-  String namabarang;
-  //Constructor
-  DataMahasiswa({this.id, this.namabarang});
-
-  //Data List
-  static List<DataMahasiswa> getDataBarang() {
-    return <DataMahasiswa>[
-      DataMahasiswa(
-          id: "Nama", namabarang:"Akbar Ridwan", ),
-      DataMahasiswa(),
-    ];
-    
-  }
-}
-class Aritmatika extends StatefulWidget {
-  _AritmatikaState createState() => new _AritmatikaState();
-}
-
-class _AritmatikaState extends State<Aritmatika> {
-
-  String hasil;
-
-  onHitung() {
-    setState(() {
-      var  jumlah= int.parse(xJumlah.text) * int.parse(xHarga.text);
-      hasil = "$jumlah";
-    });
-  }
-
+class Gagal extends StatelessWidget {
   Widget build(BuildContext context) {
-
-    final id = TextFormField(
-      autofocus: false,
-      controller: xNama,
-      decoration: InputDecoration(
-        hintText: 'Nama',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ),
-    );
-    
-    final jmlah = TextFormField(
-      autofocus: false,
-      controller: xJumlah,
-      decoration: InputDecoration(
-        hintText: 'Jumlah',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ),
-    );
-
-    final hrga = TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      autofocus: false,
-      controller: xHarga,
-      decoration: InputDecoration(
-        hintText: 'Harga', 
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ),
-    );
-
-
-
-    final loginButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          onPressed:onHitung,
-            // () {Navigator.pushNamed(context, "myApp");},
-          color: Colors.lightBlueAccent,
-          child: Text('Hitung', style: TextStyle(color: Colors.white)),
-        ),
-      ),
-    );
-
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            SizedBox(height: 48.0),
-            id,
-            SizedBox(height: 48.0),
-            jmlah,
-            SizedBox(height: 48.0),
-            hrga,
-            SizedBox(height: 8.0),
-            loginButton,
-          ],
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          title: Text(
+            " GAGAL LOGIN ",
+          ),
         ),
-      ),
-    );
+        body: Center(child: Text("ANDA GAGAL LOGIN !!!!", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold))));
   }
 }
